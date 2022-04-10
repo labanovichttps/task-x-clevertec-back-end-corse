@@ -15,9 +15,16 @@ CREATE TABLE tag
     name VARCHAR(255) not null
 );
 
-CREATE TABLE IF NOT EXISTS gift_certificate_tag
+create table gift_certificate_tag
 (
-    gift_certificate_id BIGINT REFERENCES gift_certificate (id) NOT NULL,
-    tag_id              BIGINT REFERENCES tag (id)              NOT NULL,
-    PRIMARY KEY (gift_certificate_id, tag_id)
-    );
+    gift_certificate_id bigint not null
+        constraint gift_certificate_tag_gift_certificate_id_fkey
+            references gift_certificate
+            on delete cascade,
+    tag_id              bigint not null
+        constraint gift_certificate_tag_tag_id_fkey
+            references tag
+            on delete cascade,
+    constraint gift_certificate_tag_pkey
+        primary key (gift_certificate_id, tag_id)
+);

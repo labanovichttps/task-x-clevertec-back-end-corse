@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.clevertec.entiry.dto.CertificateDto;
+import ru.clevertec.entity.dto.CertificateDto;
 import ru.clevertec.service.CertificateService;
 
 import java.util.List;
