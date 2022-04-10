@@ -3,8 +3,6 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: loverloser
-    url:
+    url: jdbc:postgresql://localhost:5432/certificate_repository
   jpa:
     show-sql: true
-    hibernate:
-      ddl-auto: create
