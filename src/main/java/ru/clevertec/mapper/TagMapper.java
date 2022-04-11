@@ -9,5 +9,8 @@ import ru.clevertec.entity.dto.TagDto;
 public interface TagMapper {
 
     TagMapper INSTANCE = Mappers.getMapper(TagMapper.class);
+
     TagDto mapTagToDto(Tag tag);
+
+    Tag mapToTag(TagDto tagDto);
 }
