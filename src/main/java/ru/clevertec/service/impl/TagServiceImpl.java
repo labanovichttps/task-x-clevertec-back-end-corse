@@ -12,7 +12,6 @@ import ru.clevertec.repository.TagRepository;
 import ru.clevertec.service.TagService;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -44,10 +43,13 @@ public class TagServiceImpl implements TagService {
     }
 
     @Transactional
-    public TagDto updateTag(TagDto tagDto) {
-        Tag tag = tagMapper.toTag(tagDto);
-        tagRepository.save(tag);
-        return tagDto;
+    public TagDto updateTag(Long id, TagDto tagDto) {
+        return tagRepository.findById(id)
+                .map(entity -> {
+                    tagDto.setId(id);
+                    tagRepository.saveAndFlush(tagMapper.toTag(tagDto));
+                    return tagDto;
+                }).orElseThrow(() -> new EntityNotFoundException("Tag", "id", id, HttpStatus.NOT_FOUND));
     }
 
     @Transactional

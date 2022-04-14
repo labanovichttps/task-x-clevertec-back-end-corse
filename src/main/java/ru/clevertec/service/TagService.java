@@ -12,7 +12,7 @@ public interface TagService {
 
     TagDto saveTag(TagDto tagDto);
 
-    TagDto updateTag(TagDto tagDto);
+    TagDto updateTag(Long id, TagDto tagDto);
 
     boolean removeTag(Long id);
 }

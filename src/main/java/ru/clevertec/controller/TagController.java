@@ -12,18 +12,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.clevertec.dto.TagDto;
-import ru.clevertec.service.impl.TagServiceImpl;
+import ru.clevertec.service.TagService;
 
 import java.util.List;
 
-import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.http.ResponseEntity.noContent;
+import static org.springframework.http.ResponseEntity.notFound;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/tags")
 public class TagController {
 
-    private final TagServiceImpl tagService;
+    private final TagService tagService;
 
     @GetMapping
     public ResponseEntity<List<TagDto>> getAllTags() {
@@ -43,10 +44,11 @@ public class TagController {
         return new ResponseEntity<>(saveTag, HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<TagDto> updateTag(@RequestBody TagDto tagDto){
-        TagDto saveTag = tagService.updateTag(tagDto);
-        return new ResponseEntity<>(saveTag, HttpStatus.CREATED);
+    @PutMapping("/{id}")
+    public ResponseEntity<TagDto> updateTag(@PathVariable Long id,
+                                            @RequestBody TagDto tagDto){
+        TagDto saveTag = tagService.updateTag(id, tagDto);
+        return new ResponseEntity<>(saveTag, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

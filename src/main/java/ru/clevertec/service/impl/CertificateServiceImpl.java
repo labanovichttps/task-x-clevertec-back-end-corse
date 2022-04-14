@@ -31,23 +31,35 @@ public class CertificateServiceImpl implements CertificateService {
     public CertificateDto getCertificateById(Long id) {
         return certificateRepository.findById(id)
                 .map(certificateMapper::toCertificateDto)
-                .orElseThrow(()-> new EntityNotFoundException("Certificate", "id", id, HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new EntityNotFoundException("Certificate", "id", id, HttpStatus.NOT_FOUND));
     }
 
     @Override
-    public CertificateDto saveCertificate(CertificateDto tagDto) {
-        return null;
+    public CertificateDto saveCertificate(CertificateDto certificateDto) {
+        Certificate certificate = certificateMapper.toCertificate(certificateDto);
+        certificateRepository.save(certificate);
+        return certificateDto;
     }
 
     @Override
-    public CertificateDto updateCertificate(CertificateDto tagDto) {
-        Certificate certificate = certificateRepository.save(certificateMapper.toCertificate(tagDto));
-        return certificateMapper.toCertificateDto(certificate);
+    public CertificateDto updateCertificate(Long id, CertificateDto certificateDto) {
+        return certificateRepository.findById(id)
+                .map(certificate -> {
+                    certificateDto.setId(id);
+                    certificateRepository.saveAndFlush(certificateMapper.toCertificate(certificateDto));
+                    return certificateDto;
+                }).orElseThrow(() -> new EntityNotFoundException("Certificate", "id", id, HttpStatus.NOT_FOUND));
     }
 
     @Override
-    public void removeCertificate(Long id) {
-
+    public boolean removeCertificate(Long id) {
+        return certificateRepository.findById(id)
+                .map(certificate -> {
+                    certificateRepository.delete(certificate);
+                    certificateRepository.flush();
+                    return true;
+                })
+                .orElse(false);
     }
 
 }
