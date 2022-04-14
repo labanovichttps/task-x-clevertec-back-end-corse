@@ -23,12 +23,14 @@ public class TagServiceImpl implements TagService {
     private final TagRepository tagRepository;
     private final TagMapper tagMapper;
 
+    @Override
     public List<TagDto> getAllTags() {
         return tagRepository.findAll().stream()
                 .map(tagMapper::tagToDto)
                 .collect(toList());
     }
 
+    @Override
     public TagDto getTagById(Long id) {
         return tagRepository.findById(id)
                 .map(tagMapper::tagToDto)
@@ -36,6 +38,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Transactional
+    @Override
     public TagDto saveTag(TagDto tagDto) {
         Tag tag = tagMapper.toTag(tagDto);
         tagRepository.save(tag);
@@ -43,6 +46,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Transactional
+    @Override
     public TagDto updateTag(Long id, TagDto tagDto) {
         return tagRepository.findById(id)
                 .map(entity -> {
@@ -53,6 +57,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Transactional
+    @Override
     public boolean removeTag(Long id) {
         return tagRepository.findById(id)
                 .map(tag -> {
