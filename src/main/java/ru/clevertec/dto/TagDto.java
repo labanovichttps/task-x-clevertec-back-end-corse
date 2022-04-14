@@ -1,11 +1,11 @@
-package ru.clevertec.entity.dto;
+package ru.clevertec.dto;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class TagDtoWithoutCertificates {
+public class TagDto {
 
     private Long id;
     private String name;

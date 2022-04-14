@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.clevertec.entity.dto.CertificateDto;
-import ru.clevertec.service.CertificateService;
+import ru.clevertec.dto.CertificateDto;
+import ru.clevertec.dto.TagDto;
+import ru.clevertec.service.impl.CertificateServiceImpl;
 
 import java.util.List;
 
@@ -16,11 +19,17 @@ import java.util.List;
 @RestController
 public class CertificateController {
 
-    private final CertificateService certificateService;
+    private final CertificateServiceImpl certificateServiceImpl;
 
     @GetMapping("/certificates")
     public ResponseEntity<List<CertificateDto>> getAllCertificates(){
-        List<CertificateDto> certificates = certificateService.getAllCertificates();
+        List<CertificateDto> certificates = certificateServiceImpl.getAllCertificates();
         return new ResponseEntity<>(certificates, HttpStatus.OK);
+    }
+
+    @PutMapping("/certificates")
+    public ResponseEntity<CertificateDto> updateCertificate(@RequestBody CertificateDto certificateDto){
+        CertificateDto certificate = certificateServiceImpl.updateCertificate(certificateDto);
+        return new ResponseEntity<>(certificate, HttpStatus.OK);
     }
 }

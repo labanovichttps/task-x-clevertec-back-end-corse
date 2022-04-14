@@ -1,7 +1,6 @@
 package ru.clevertec.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.Mapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,47 +11,48 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.clevertec.entity.Tag;
-import ru.clevertec.entity.dto.TagDto;
-import ru.clevertec.mapper.TagMapper;
-import ru.clevertec.service.TagService;
+import ru.clevertec.dto.TagDto;
+import ru.clevertec.service.impl.TagServiceImpl;
 
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.*;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/tags")
 public class TagController {
 
-    private final TagService tagService;
+    private final TagServiceImpl tagService;
 
-    @GetMapping("/tags")
+    @GetMapping
     public ResponseEntity<List<TagDto>> getAllTags() {
-        List<TagDto> tags = tagService.findAllTags();
+        List<TagDto> tags = tagService.getAllTags();
         return new ResponseEntity<>(tags, HttpStatus.OK);
     }
 
-    @GetMapping("/tags/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<TagDto> getTagById(@PathVariable Long id){
-        TagDto tagDto = tagService.findById(id);
+        TagDto tagDto = tagService.getTagById(id);
         return new ResponseEntity<>(tagDto, HttpStatus.OK);
     }
 
-    @PostMapping("/tags")
+    @PostMapping
     public ResponseEntity<TagDto> createTag(@RequestBody TagDto tagDto){
-        TagDto saveTag = tagService.save(tagDto);
+        TagDto saveTag = tagService.saveTag(tagDto);
         return new ResponseEntity<>(saveTag, HttpStatus.CREATED);
     }
 
-    @PutMapping("/tags")
+    @PutMapping
     public ResponseEntity<TagDto> updateTag(@RequestBody TagDto tagDto){
-        TagDto saveTag = tagService.update(tagDto);
+        TagDto saveTag = tagService.updateTag(tagDto);
         return new ResponseEntity<>(saveTag, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/tags")
-    public void deleteTag(@RequestBody TagDto tagDto){
-        Tag tag = TagMapper.INSTANCE.mapToTag(tagDto);
-        tagService.remove(tag);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteTag(@PathVariable Long id){
+        return tagService.removeTag(id)
+                ? noContent().build()
+                : notFound().build();
     }
 }
