@@ -1,7 +1,6 @@
 package ru.clevertec.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.dto.CertificateDto;
@@ -20,6 +19,9 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class CertificateServiceImpl implements CertificateService {
 
+    private static final String CERTIFICATE_LABEL = "Certificate";
+    private static final String ID_LABEL = "id";
+
     private final CertificateRepository certificateRepository;
     private final CertificateMapper certificateMapper;
 
@@ -33,15 +35,15 @@ public class CertificateServiceImpl implements CertificateService {
     public CertificateDto getCertificateById(Long id) {
         return certificateRepository.findById(id)
                 .map(certificateMapper::toCertificateDto)
-                .orElseThrow(() -> new EntityNotFoundException("Certificate", "id", id, HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new EntityNotFoundException(CERTIFICATE_LABEL, ID_LABEL, id));
     }
 
     @Transactional
     @Override
     public CertificateDto saveCertificate(CertificateDto certificateDto) {
         Certificate certificate = certificateMapper.toCertificate(certificateDto);
-        certificateRepository.save(certificate);
-        return certificateDto;
+        Certificate saveCertificate = certificateRepository.save(certificate);
+        return certificateMapper.toCertificateDto(saveCertificate);
     }
 
     @Transactional
@@ -50,21 +52,22 @@ public class CertificateServiceImpl implements CertificateService {
         return certificateRepository.findById(id)
                 .map(certificate -> {
                     certificateDto.setId(id);
-                    certificateRepository.saveAndFlush(certificateMapper.toCertificate(certificateDto));
-                    return certificateDto;
-                }).orElseThrow(() -> new EntityNotFoundException("Certificate", "id", id, HttpStatus.NOT_FOUND));
+                    Certificate saveCertificate = certificateRepository
+                            .saveAndFlush(certificateMapper.toCertificate(certificateDto));
+                    return certificateMapper.toCertificateDto(saveCertificate);
+                }).orElseThrow(() -> new EntityNotFoundException(CERTIFICATE_LABEL, ID_LABEL, id));
     }
 
     @Transactional
     @Override
-    public boolean removeCertificate(Long id) {
-        return certificateRepository.findById(id)
+    public void removeCertificate(Long id) {
+        certificateRepository.findById(id)
                 .map(certificate -> {
                     certificateRepository.delete(certificate);
                     certificateRepository.flush();
-                    return true;
+                    return certificate;
                 })
-                .orElse(false);
+                .orElseThrow(() -> new EntityNotFoundException(CERTIFICATE_LABEL, ID_LABEL, id));
     }
 
 }

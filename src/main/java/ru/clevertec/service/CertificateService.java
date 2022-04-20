@@ -14,5 +14,5 @@ public interface CertificateService {
 
     CertificateDto updateCertificate(Long id, CertificateDto tagDto);
 
-    boolean removeCertificate(Long id);
+    void removeCertificate(Long id);
 }

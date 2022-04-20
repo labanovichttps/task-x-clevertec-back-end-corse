@@ -12,13 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.clevertec.dto.CertificateDto;
-import ru.clevertec.dto.TagDto;
 import ru.clevertec.service.CertificateService;
 
 import java.util.List;
-
-import static org.springframework.http.ResponseEntity.noContent;
-import static org.springframework.http.ResponseEntity.notFound;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/certificates")
@@ -34,28 +30,27 @@ public class CertificateController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CertificateDto> getCertificate(@PathVariable Long id){
+    public ResponseEntity<CertificateDto> getCertificateById(@PathVariable Long id){
         CertificateDto certificateDto = certificateService.getCertificateById(id);
         return new ResponseEntity<>(certificateDto, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<CertificateDto> createTag(@RequestBody CertificateDto certificateDto){
-        CertificateDto certificate = certificateService.saveCertificate(certificateDto);
-        return new ResponseEntity<>(certificate, HttpStatus.CREATED);
+        CertificateDto saveCertificate = certificateService.saveCertificate(certificateDto);
+        return new ResponseEntity<>(saveCertificate, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CertificateDto> updateCertificate(@PathVariable Long id,
                                                             @RequestBody CertificateDto certificateDto){
-        CertificateDto certificate = certificateService.updateCertificate(id, certificateDto);
-        return new ResponseEntity<>(certificate, HttpStatus.OK);
+        CertificateDto updateCertificate = certificateService.updateCertificate(id, certificateDto);
+        return new ResponseEntity<>(updateCertificate, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCertificate(@PathVariable Long id){
-        return certificateService.removeCertificate(id)
-                ? noContent().build()
-                : notFound().build();
+        certificateService.removeCertificate(id);
+        return ResponseEntity.noContent().build();
     }
 }

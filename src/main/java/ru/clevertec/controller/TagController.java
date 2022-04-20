@@ -1,6 +1,7 @@
 package ru.clevertec.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,9 +17,7 @@ import ru.clevertec.service.TagService;
 
 import java.util.List;
 
-import static org.springframework.http.ResponseEntity.noContent;
-import static org.springframework.http.ResponseEntity.notFound;
-
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/tags")
@@ -38,6 +37,12 @@ public class TagController {
         return new ResponseEntity<>(tagDto, HttpStatus.OK);
     }
 
+    @GetMapping("/{name}")
+    public ResponseEntity<TagDto> getTagByName(@PathVariable String name){
+        TagDto tagDto = tagService.findTagByName(name);
+        return new ResponseEntity<>(tagDto, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<TagDto> createTag(@RequestBody TagDto tagDto){
         TagDto saveTag = tagService.saveTag(tagDto);
@@ -47,14 +52,13 @@ public class TagController {
     @PutMapping("/{id}")
     public ResponseEntity<TagDto> updateTag(@PathVariable Long id,
                                             @RequestBody TagDto tagDto){
-        TagDto saveTag = tagService.updateTag(id, tagDto);
-        return new ResponseEntity<>(saveTag, HttpStatus.OK);
+        TagDto updateTag = tagService.updateTag(id, tagDto);
+        return new ResponseEntity<>(updateTag, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTag(@PathVariable Long id){
-        return tagService.removeTag(id)
-                ? noContent().build()
-                : notFound().build();
+        tagService.removeTag(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

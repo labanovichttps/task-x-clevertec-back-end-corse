@@ -1,7 +1,7 @@
 package ru.clevertec.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.dto.TagDto;
@@ -15,10 +15,14 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+@Slf4j
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class TagServiceImpl implements TagService {
+
+    private static final String TAG_LABEL = "Tag";
+    private static final String ID_LABEL = "id";
 
     private final TagRepository tagRepository;
     private final TagMapper tagMapper;
@@ -34,37 +38,45 @@ public class TagServiceImpl implements TagService {
     public TagDto getTagById(Long id) {
         return tagRepository.findById(id)
                 .map(tagMapper::tagToDto)
-                .orElseThrow(() -> new EntityNotFoundException("Tag", "id", id, HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, id));
+    }
+
+    @Override
+    public TagDto findTagByName(String name) {
+        return tagRepository.findByNameIgnoreCase(name)
+                .map(tagMapper::tagToDto)
+                .orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, name));
     }
 
     @Transactional
     @Override
     public TagDto saveTag(TagDto tagDto) {
         Tag tag = tagMapper.toTag(tagDto);
-        tagRepository.save(tag);
-        return tagDto;
+        Tag saveTag = tagRepository.save(tag);
+        return tagMapper.tagToDto(saveTag);
     }
 
     @Transactional
     @Override
     public TagDto updateTag(Long id, TagDto tagDto) {
         return tagRepository.findById(id)
-                .map(entity -> {
-                    tagDto.setId(id);
-                    tagRepository.saveAndFlush(tagMapper.toTag(tagDto));
-                    return tagDto;
-                }).orElseThrow(() -> new EntityNotFoundException("Tag", "id", id, HttpStatus.NOT_FOUND));
+                .map(tag -> {
+                    Tag saveTag = tagRepository.saveAndFlush(tagMapper.toTag(tagDto));
+                    return tagMapper.tagToDto(saveTag);
+                }).orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, id));
     }
 
     @Transactional
     @Override
-    public boolean removeTag(Long id) {
-        return tagRepository.findById(id)
+    public void removeTag(Long id) {
+        tagRepository.findById(id)
                 .map(tag -> {
                     tagRepository.delete(tag);
                     tagRepository.flush();
-                    return true;
+                    return tag;
                 })
-                .orElse(false);
+                .orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, id));
     }
+
+
 }
