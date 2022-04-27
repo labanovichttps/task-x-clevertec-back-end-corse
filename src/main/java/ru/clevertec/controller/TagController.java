@@ -37,12 +37,6 @@ public class TagController {
         return new ResponseEntity<>(tagDto, HttpStatus.OK);
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<TagDto> getTagByName(@PathVariable String name){
-        TagDto tagDto = tagService.findTagByName(name);
-        return new ResponseEntity<>(tagDto, HttpStatus.OK);
-    }
-
     @PostMapping
     public ResponseEntity<TagDto> createTag(@RequestBody TagDto tagDto){
         TagDto saveTag = tagService.saveTag(tagDto);
