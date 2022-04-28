@@ -1,4 +1,4 @@
-package ru.clevertec.entiry.dto;
+package ru.clevertec.dto;
 
 import lombok.Builder;
 import lombok.Value;

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.clevertec.dto.CertificateDto;
-import ru.clevertec.entiry.dto.CertificateFilter;
+import ru.clevertec.dto.CertificateFilter;
 import ru.clevertec.service.CertificateService;
 
 import java.util.List;

@@ -13,6 +13,7 @@ import ru.clevertec.service.TagService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -43,10 +44,9 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public TagDto findTagByName(String name) {
+    public Optional<TagDto> findTagByName(String name) {
         return tagRepository.findByNameIgnoreCase(name)
-                .map(tagMapper::tagToDto)
-                .orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, name));
+                .map(tagMapper::tagToDto);
     }
 
     @Transactional
@@ -68,6 +68,12 @@ public class TagServiceImpl implements TagService {
                 }).orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, id));
     }
 
+    @Override
+    public TagDto findTagByNameOrSave(TagDto tagDto) {
+        return findTagByName(tagDto.getName())
+                .orElseGet(() -> saveTag(tagDto));
+    }
+
     @Transactional
     @Override
     public void removeTag(Long id) {
@@ -80,8 +86,8 @@ public class TagServiceImpl implements TagService {
                 .orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, id));
     }
 
-    private Tag updateTag(TagDto from, Tag to){
-        if (Objects.nonNull(from.getName())){
+    private Tag updateTag(TagDto from, Tag to) {
+        if (Objects.nonNull(from.getName())) {
             to.setName(from.getName());
         }
 

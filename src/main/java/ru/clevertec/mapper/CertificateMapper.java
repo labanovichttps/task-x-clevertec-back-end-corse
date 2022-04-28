@@ -2,7 +2,7 @@ package ru.clevertec.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.clevertec.entiry.dto.CertificateFilter;
+import ru.clevertec.dto.CertificateFilter;
 import ru.clevertec.entity.Certificate;
 import ru.clevertec.dto.CertificateDto;
 

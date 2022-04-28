@@ -3,7 +3,7 @@ package ru.clevertec.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import ru.clevertec.dto.CertificateDto;
-import ru.clevertec.entiry.dto.CertificateFilter;
+import ru.clevertec.dto.CertificateFilter;
 
 import java.util.List;
 
