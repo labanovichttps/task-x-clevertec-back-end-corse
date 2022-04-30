@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CertificateService {
 
-    Page<CertificateDto> getAllCertificates(CertificateFilter certificateFilter, Pageable pageable);
+    Page<CertificateDto> getCertificates(CertificateFilter certificateFilter, Pageable pageable);
 
     CertificateDto getCertificateById(Long id);
 

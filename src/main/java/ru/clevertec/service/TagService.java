@@ -1,23 +1,19 @@
 package ru.clevertec.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.clevertec.dto.TagDto;
-
-import java.util.List;
-import java.util.Optional;
+import ru.clevertec.dto.TagFilter;
 
 public interface TagService {
 
-    List<TagDto> getAllTags();
+    Page<TagDto> getTags(TagFilter filter, Pageable pageable);
 
     TagDto getTagById(Long id);
-
-    Optional<TagDto> findTagByName(String name);
 
     TagDto saveTag(TagDto tagDto);
 
     TagDto updateTag(Long id, TagDto tagDto);
-
-    TagDto findTagByNameOrSave(TagDto tagDto);
 
     void removeTag(Long id);
 }

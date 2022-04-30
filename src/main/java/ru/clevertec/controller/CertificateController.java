@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.clevertec.dto.CertificateDto;
 import ru.clevertec.dto.CertificateFilter;
+import ru.clevertec.dto.PageResponse;
 import ru.clevertec.service.CertificateService;
 
 import java.util.List;
@@ -28,47 +29,45 @@ public class CertificateController {
     private final CertificateService certificateService;
 
     @GetMapping
-    public ResponseEntity<?> getAllCertificates(CertificateFilter certificateFilter,
-                                                                   Pageable pageable) {
-        //todo
-        Page<CertificateDto> certificates = certificateService.getAllCertificates(certificateFilter, pageable);
-        return new ResponseEntity<>(certificates, HttpStatus.OK);
+    public PageResponse<CertificateDto> find(CertificateFilter filter, Pageable pageable) {
+        Page<CertificateDto> certificates = certificateService.getCertificates(filter, pageable);
+        return PageResponse.of(certificates);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CertificateDto> getCertificateById(@PathVariable Long id) {
+    public ResponseEntity<CertificateDto> findById(@PathVariable Long id) {
         CertificateDto certificateDto = certificateService.getCertificateById(id);
         return new ResponseEntity<>(certificateDto, HttpStatus.OK);
     }
 
     @GetMapping("/tag/{tagName}")
-    public ResponseEntity<List<CertificateDto>> getCertificatesByTagName(@PathVariable String tagName) {
+    public ResponseEntity<List<CertificateDto>> findByTagName(@PathVariable String tagName) {
         List<CertificateDto> certificates = certificateService.getCertificatesByTagName(tagName);
         return new ResponseEntity<>(certificates, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<CertificateDto> createTag(@RequestBody CertificateDto certificateDto) {
+    public ResponseEntity<CertificateDto> create(@RequestBody CertificateDto certificateDto) {
         CertificateDto saveCertificate = certificateService.saveCertificate(certificateDto);
         return new ResponseEntity<>(saveCertificate, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CertificateDto> updateCertificate(@PathVariable Long id,
-                                                            @RequestBody CertificateDto certificateDto) {
+    public ResponseEntity<CertificateDto> update(@PathVariable Long id,
+                                                 @RequestBody CertificateDto certificateDto) {
         CertificateDto updateCertificate = certificateService.updateCertificate(id, certificateDto);
         return new ResponseEntity<>(updateCertificate, HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<CertificateDto> updateCertificatePrice(@PathVariable Long id,
-                                                                 @RequestBody CertificateDto certificateDto){
+    public ResponseEntity<CertificateDto> updatePrice(@PathVariable Long id,
+                                                      @RequestBody CertificateDto certificateDto) {
         CertificateDto updateCertificate = certificateService.updateCertificatePrice(id, certificateDto);
         return new ResponseEntity<>(updateCertificate, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCertificate(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         certificateService.removeCertificate(id);
         return ResponseEntity.noContent().build();
     }

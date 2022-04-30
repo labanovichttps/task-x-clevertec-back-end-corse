@@ -9,11 +9,11 @@ import ru.clevertec.dto.ErrorDto;
 import ru.clevertec.exception.EntityNotFoundException;
 
 @RestControllerAdvice
-public class ResponseEntityExceptionHandler{
+public class ResponseEntityExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<?> handlerTagNotFoundException(EntityNotFoundException exc){
+    public ResponseEntity<?> handlerTagNotFoundException(EntityNotFoundException exc) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ErrorDto.builder()
                         .message(exc.getMessage())

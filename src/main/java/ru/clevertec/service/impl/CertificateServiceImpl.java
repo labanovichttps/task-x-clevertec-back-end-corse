@@ -10,17 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.dto.CertificateDto;
 import ru.clevertec.dto.CertificateFilter;
 import ru.clevertec.entity.Certificate;
-import ru.clevertec.entity.Tag;
 import ru.clevertec.exception.EntityNotFoundException;
 import ru.clevertec.mapper.CertificateMapper;
-import ru.clevertec.mapper.TagMapper;
 import ru.clevertec.repository.CertificateRepository;
 import ru.clevertec.service.CertificateService;
-import ru.clevertec.service.TagService;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
@@ -31,18 +26,15 @@ public class CertificateServiceImpl implements CertificateService {
 
     private static final String CERTIFICATE_LABEL = "Certificate";
     private static final String ID_LABEL = "id";
-
-    private final TagService tagService;
     private final CertificateRepository certificateRepository;
     private final CertificateMapper certificateMapper;
-    private final TagMapper tagMapper;
 
-    public Page<CertificateDto> getAllCertificates(CertificateFilter certificateFilter, Pageable pageable) {
+    public Page<CertificateDto> getCertificates(CertificateFilter filter, Pageable pageable) {
         ExampleMatcher matcher = ExampleMatcher.matchingAll()
-                .withMatcher("description", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+                .withMatcher("description", match -> match.contains().ignoreCase())
+                .withMatcher("name", match -> match.contains().contains().ignoreCase());
         return certificateRepository.findAll(
-                        Example.of(certificateMapper.toCertificate(certificateFilter), matcher), pageable)
+                        Example.of(certificateMapper.toCertificate(filter), matcher), pageable)
                 .map(certificateMapper::toCertificateDto);
     }
 
@@ -73,9 +65,9 @@ public class CertificateServiceImpl implements CertificateService {
     public CertificateDto updateCertificate(Long id, CertificateDto certificateDto) {
         return certificateRepository.findById(id)
                 .map(certificate -> {
-                    Certificate certificateForUpdate = updateCertificate(certificateDto, certificate);
+                    certificateDto.setId(id);
                     Certificate saveCertificate = certificateRepository
-                            .saveAndFlush(certificateForUpdate);
+                            .saveAndFlush(certificateMapper.toCertificate(certificateDto));
                     return certificateMapper.toCertificateDto(saveCertificate);
                 }).orElseThrow(() -> new EntityNotFoundException(CERTIFICATE_LABEL, ID_LABEL, id));
     }
@@ -103,40 +95,4 @@ public class CertificateServiceImpl implements CertificateService {
                 })
                 .orElseThrow(() -> new EntityNotFoundException(CERTIFICATE_LABEL, ID_LABEL, id));
     }
-
-    private Certificate updateCertificate(CertificateDto certificateDto, Certificate certificate) {
-        if (Objects.nonNull(certificateDto.getName())) {
-            certificate.setName(certificateDto.getName());
-        }
-        if (Objects.nonNull(certificateDto.getDescription())) {
-            certificate.setDescription(certificateDto.getDescription());
-        }
-        if (Objects.nonNull(certificateDto.getPrice())) {
-            certificate.setPrice(certificateDto.getPrice());
-        }
-        if (Objects.nonNull(certificateDto.getDuration())) {
-            certificate.setDuration(certificateDto.getDuration());
-        }
-        if (Objects.nonNull(certificateDto.getCreateDate())) {
-            certificate.setCreateDate(certificateDto.getCreateDate());
-        }
-        if (Objects.nonNull(certificateDto.getLastUpdateDate())) {
-            certificate.setLastUpdateDate(certificateDto.getLastUpdateDate());
-        }
-        certificate.setLastUpdateDate(LocalDateTime.now());
-        updateCertificateTags(certificateDto, certificate);
-
-        return certificate;
-    }
-
-    private void updateCertificateTags(CertificateDto certificateDto, Certificate certificate){
-        if (Objects.nonNull(certificateDto.getTags())){
-            List<Tag> tags = certificateDto.getTags().stream()
-                    .map(tagService::findTagByNameOrSave)
-                    .map(tagMapper::toTag)
-                    .collect(toList());
-            certificate.setTags(tags);
-        }
-    }
-
 }
