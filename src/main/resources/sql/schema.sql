@@ -28,3 +28,9 @@ create table gift_certificate_tag
     constraint gift_certificate_tag_pkey
         primary key (gift_certificate_id, tag_id)
 );
+
+create table users
+(
+    id    bigserial primary key,
+    login varchar(255) unique not null
+)
