@@ -12,9 +12,11 @@ import ru.clevertec.dto.CertificateFilter;
 import ru.clevertec.entity.Certificate;
 import ru.clevertec.exception.EntityNotFoundException;
 import ru.clevertec.mapper.CertificateMapper;
+import ru.clevertec.mapper.TagMapper;
 import ru.clevertec.repository.CertificateRepository;
 import ru.clevertec.service.CertificateService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -28,18 +30,19 @@ public class CertificateServiceImpl implements CertificateService {
     private static final String ID_LABEL = "id";
     private final CertificateRepository certificateRepository;
     private final CertificateMapper certificateMapper;
+    private final TagMapper tagMapper;
 
     public Page<CertificateDto> getCertificates(CertificateFilter filter, Pageable pageable) {
         ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("description", match -> match.contains().ignoreCase())
                 .withMatcher("name", match -> match.contains().contains().ignoreCase());
         return certificateRepository.findAll(
-                        Example.of(certificateMapper.toCertificate(filter), matcher), pageable)
+                        Example.of(certificateMapper.filterToCertificate(filter), matcher), pageable)
                 .map(certificateMapper::toCertificateDto);
     }
 
     @Override
-    public CertificateDto getCertificateById(Long id) {
+    public CertificateDto findById(Long id) {
         return certificateRepository.findById(id)
                 .map(certificateMapper::toCertificateDto)
                 .orElseThrow(() -> new EntityNotFoundException(CERTIFICATE_LABEL, ID_LABEL, id));
@@ -55,6 +58,8 @@ public class CertificateServiceImpl implements CertificateService {
     @Transactional
     @Override
     public CertificateDto saveCertificate(CertificateDto certificateDto) {
+        certificateDto.setCreateDate(LocalDateTime.now());
+        //db lvl?
         Certificate certificate = certificateMapper.toCertificate(certificateDto);
         Certificate saveCertificate = certificateRepository.save(certificate);
         return certificateMapper.toCertificateDto(saveCertificate);
@@ -65,10 +70,10 @@ public class CertificateServiceImpl implements CertificateService {
     public CertificateDto updateCertificate(Long id, CertificateDto certificateDto) {
         return certificateRepository.findById(id)
                 .map(certificate -> {
-                    certificateDto.setId(id);
-                    Certificate saveCertificate = certificateRepository
-                            .saveAndFlush(certificateMapper.toCertificate(certificateDto));
-                    return certificateMapper.toCertificateDto(saveCertificate);
+                    certificateMapper.updateFromCertificateDto(certificateDto, certificate);
+                    Certificate savedCertificate = certificateRepository
+                            .saveAndFlush(certificate);
+                    return certificateMapper.toCertificateDto(savedCertificate);
                 }).orElseThrow(() -> new EntityNotFoundException(CERTIFICATE_LABEL, ID_LABEL, id));
     }
 
@@ -78,6 +83,7 @@ public class CertificateServiceImpl implements CertificateService {
         return certificateRepository.findById(id)
                 .map(certificate -> {
                     certificate.setPrice(certificateDto.getPrice());
+                    certificate.setLastUpdateDate(LocalDateTime.now());
                     Certificate saveCertificate = certificateRepository
                             .saveAndFlush(certificate);
                     return certificateMapper.toCertificateDto(saveCertificate);
@@ -95,4 +101,5 @@ public class CertificateServiceImpl implements CertificateService {
                 })
                 .orElseThrow(() -> new EntityNotFoundException(CERTIFICATE_LABEL, ID_LABEL, id));
     }
+
 }

@@ -8,10 +8,9 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class OrderDto {
+public class ReadOrderDto {
 
     private Long id;
-    private CertificateDto certificate;
-    private LocalDateTime orderDate;
     private BigDecimal totalPrice;
+    private LocalDateTime orderDate;
 }

@@ -7,13 +7,15 @@ import ru.clevertec.dto.TagFilter;
 
 public interface TagService {
 
-    Page<TagDto> getTags(TagFilter filter, Pageable pageable);
+    Page<TagDto> find(TagFilter filter, Pageable pageable);
 
-    TagDto getTagById(Long id);
+    TagDto findById(Long id);
 
-    TagDto saveTag(TagDto tagDto);
+    TagDto findByNameOrSave(TagDto tagDto);
 
-    TagDto updateTag(Long id, TagDto tagDto);
+    TagDto save(TagDto tagDto);
 
-    void removeTag(Long id);
+    TagDto update(Long id, TagDto tagDto);
+
+    void remove(Long id);
 }

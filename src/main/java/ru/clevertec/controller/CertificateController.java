@@ -36,7 +36,7 @@ public class CertificateController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CertificateDto> findById(@PathVariable Long id) {
-        CertificateDto certificateDto = certificateService.getCertificateById(id);
+        CertificateDto certificateDto = certificateService.findById(id);
         return new ResponseEntity<>(certificateDto, HttpStatus.OK);
     }
 

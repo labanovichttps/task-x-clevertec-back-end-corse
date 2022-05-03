@@ -21,13 +21,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public PageResponse<UserDto> find(Pageable pageable){
+    public PageResponse<UserDto> find(Pageable pageable) {
         Page<UserDto> users = userService.find(pageable);
         return PageResponse.of(users);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> findById(@PathVariable Long id){
+    public ResponseEntity<UserDto> findById(@PathVariable Long id) {
         UserDto user = userService.findById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

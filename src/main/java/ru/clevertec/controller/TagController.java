@@ -29,32 +29,32 @@ public class TagController {
 
     @GetMapping
     public PageResponse<TagDto> find(TagFilter filter, Pageable pageable) {
-        Page<TagDto> tags = tagService.getTags(filter, pageable);
+        Page<TagDto> tags = tagService.find(filter, pageable);
         return PageResponse.of(tags);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TagDto> findById(@PathVariable Long id) {
-        TagDto tagDto = tagService.getTagById(id);
+        TagDto tagDto = tagService.findById(id);
         return new ResponseEntity<>(tagDto, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<TagDto> create(@RequestBody TagDto tagDto) {
-        TagDto saveTag = tagService.saveTag(tagDto);
+        TagDto saveTag = tagService.save(tagDto);
         return new ResponseEntity<>(saveTag, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TagDto> update(@PathVariable Long id,
                                          @RequestBody TagDto tagDto) {
-        TagDto updateTag = tagService.updateTag(id, tagDto);
+        TagDto updateTag = tagService.update(id, tagDto);
         return new ResponseEntity<>(updateTag, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        tagService.removeTag(id);
+        tagService.remove(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

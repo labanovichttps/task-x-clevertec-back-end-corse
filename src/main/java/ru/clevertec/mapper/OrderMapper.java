@@ -1,12 +1,11 @@
 package ru.clevertec.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import ru.clevertec.dto.OrderDto;
+import ru.clevertec.dto.ReadOrderDto;
 import ru.clevertec.entity.Order;
 
 @Mapper(componentModel = "spring")
-public interface OrderMapper {
+public abstract class OrderMapper {
 
-    OrderDto toOrderDto(Order order);
+    public abstract ReadOrderDto toReadOrderDto(Order order);
 }

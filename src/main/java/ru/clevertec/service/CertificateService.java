@@ -11,7 +11,7 @@ public interface CertificateService {
 
     Page<CertificateDto> getCertificates(CertificateFilter certificateFilter, Pageable pageable);
 
-    CertificateDto getCertificateById(Long id);
+    CertificateDto findById(Long id);
 
     List<CertificateDto> getCertificatesByTagName(String tagName);
 

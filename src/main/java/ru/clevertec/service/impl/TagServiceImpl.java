@@ -22,11 +22,12 @@ public class TagServiceImpl implements TagService {
 
     private static final String TAG_LABEL = "Tag";
     private static final String ID_LABEL = "id";
+    private static final String NAME_LABEL = "name";
     private final TagRepository tagRepository;
     private final TagMapper tagMapper;
 
     @Override
-    public Page<TagDto> getTags(TagFilter filter, Pageable pageable) {
+    public Page<TagDto> find(TagFilter filter, Pageable pageable) {
         ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("name", match -> match.contains().ignoreCase());
         return tagRepository.findAll(
@@ -35,15 +36,22 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public TagDto getTagById(Long id) {
+    public TagDto findById(Long id) {
         return tagRepository.findById(id)
                 .map(tagMapper::tagToDto)
                 .orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, id));
     }
 
+    @Override
+    public TagDto findByNameOrSave(TagDto tagDto) {
+        return tagRepository.findByName(tagDto.getName())
+                .map(tagMapper::tagToDto)
+                .orElseGet(() -> save(tagDto));
+    }
+
     @Transactional
     @Override
-    public TagDto saveTag(TagDto tagDto) {
+    public TagDto save(TagDto tagDto) {
         Tag tag = tagMapper.toTag(tagDto);
         Tag saveTag = tagRepository.save(tag);
         return tagMapper.tagToDto(saveTag);
@@ -51,18 +59,18 @@ public class TagServiceImpl implements TagService {
 
     @Transactional
     @Override
-    public TagDto updateTag(Long id, TagDto tagDto) {
+    public TagDto update(Long id, TagDto tagDto) {
         return tagRepository.findById(id)
                 .map(tag -> {
-                    tagDto.setId(id);
-                    Tag saveTag = tagRepository.saveAndFlush(tagMapper.toTag(tagDto));
+                    tagMapper.updateTagFromTagDto(tagDto, tag);
+                    Tag saveTag = tagRepository.saveAndFlush(tag);
                     return tagMapper.tagToDto(saveTag);
                 }).orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, id));
     }
 
     @Transactional
     @Override
-    public void removeTag(Long id) {
+    public void remove(Long id) {
         tagRepository.findById(id)
                 .map(tag -> {
                     tagRepository.delete(tag);
@@ -71,5 +79,4 @@ public class TagServiceImpl implements TagService {
                 })
                 .orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, id));
     }
-
 }

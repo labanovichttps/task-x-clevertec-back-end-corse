@@ -1,10 +1,13 @@
 package ru.clevertec.service;
 
-import ru.clevertec.dto.CertificateDto;
-import ru.clevertec.dto.OrderDto;
-import ru.clevertec.dto.UserDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import ru.clevertec.dto.MakeOrderDto;
+import ru.clevertec.dto.ReadOrderDto;
 
 public interface OrderService {
 
-    OrderDto createOrder(UserDto userDto, CertificateDto certificateDto);
+    Page<ReadOrderDto> find(Long userId, Pageable pageable);
+
+    ReadOrderDto makeOrder(MakeOrderDto orderDto);
 }
