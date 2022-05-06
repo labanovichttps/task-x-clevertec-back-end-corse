@@ -13,6 +13,8 @@ public interface TagService {
 
     TagDto findByNameOrSave(TagDto tagDto);
 
+    TagDto findTheMostWidelyTag();
+
     TagDto save(TagDto tagDto);
 
     TagDto update(Long id, TagDto tagDto);

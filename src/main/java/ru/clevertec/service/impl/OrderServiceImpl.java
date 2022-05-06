@@ -8,8 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.dto.CertificateDto;
 import ru.clevertec.dto.MakeOrderDto;
 import ru.clevertec.dto.ReadOrderDto;
-import ru.clevertec.dto.UserDto;
+import ru.clevertec.dto.ReadUserDto;
 import ru.clevertec.entity.Order;
+import ru.clevertec.exception.EntityNotFoundException;
 import ru.clevertec.mapper.CertificateMapper;
 import ru.clevertec.mapper.OrderMapper;
 import ru.clevertec.mapper.UserMapper;
@@ -33,21 +34,31 @@ public class OrderServiceImpl implements OrderService {
     private final CertificateMapper certificateMapper;
     private final UserMapper userMapper;
 
+    private static final String ORDER_LABEL = "order";
+    private static final String ID_LABEL = "id";
+
     @Override
     public Page<ReadOrderDto> find(Long userId, Pageable pageable) {
         return orderRepository.findAllByUserId(userId, pageable)
                 .map(orderMapper::toReadOrderDto);
     }
 
+    @Override
+    public ReadOrderDto findById(Long id) {
+        return orderRepository.findById(id)
+                .map(orderMapper::toReadOrderDto)
+                .orElseThrow(() -> new EntityNotFoundException(ORDER_LABEL, ID_LABEL, id));
+    }
+
 
     @Override
     @Transactional
     public ReadOrderDto makeOrder(MakeOrderDto orderDto) {
-        UserDto userDto = userService.findById(orderDto.getUserId());
+        ReadUserDto userDto = userService.findById(orderDto.getUserId());
         CertificateDto certificate = certificateService.findById(orderDto.getCertificateId());
 
         Order unsavedOrder = Order.builder()
-                .user(userMapper.toUser(userDto))
+                .user(userMapper.readUserDtoToUser(userDto))
                 .certificate(certificateMapper.toCertificate(certificate))
                 .orderDate(LocalDateTime.now())
                 .totalPrice(certificate.getPrice())

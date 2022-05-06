@@ -49,6 +49,13 @@ public class TagServiceImpl implements TagService {
                 .orElseGet(() -> save(tagDto));
     }
 
+    @Override
+    public TagDto findTheMostWidelyTag() {
+        return tagRepository.findTheMostWidelyTag()
+                .map(tagMapper::tagToDto)
+                .orElseThrow(() -> new EntityNotFoundException("The most widely tag hasn't found."));
+    }
+
     @Transactional
     @Override
     public TagDto save(TagDto tagDto) {

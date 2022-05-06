@@ -30,6 +30,12 @@ public class OrderController {
         return PageResponse.of(userOrders);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ReadOrderDto> findById(@PathVariable Long id){
+        ReadOrderDto order = orderService.findById(id);
+        return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<ReadOrderDto> makeOrder(@RequestBody MakeOrderDto orderDto) {
         ReadOrderDto order = orderService.makeOrder(orderDto);

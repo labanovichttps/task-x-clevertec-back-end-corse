@@ -19,6 +19,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,16 +40,21 @@ public class Certificate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @NotBlank
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
+    @NotBlank
     private String description;
 
+    @Positive
     private BigDecimal price;
 
+    @Positive
     private Long duration;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @Column(nullable = false)
     private LocalDateTime createDate;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

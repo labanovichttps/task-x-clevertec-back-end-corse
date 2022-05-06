@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -28,8 +29,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
     @Column(unique = true, nullable = false)
     private String login;
+
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
     private List<Order> orders;

@@ -39,6 +39,11 @@ public class TagController {
         return new ResponseEntity<>(tagDto, HttpStatus.OK);
     }
 
+    @GetMapping("/the-most-widely-used")
+    public ResponseEntity<TagDto> findTheMostWidelyUsed() {
+        return new ResponseEntity<>(tagService.findTheMostWidelyTag(), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<TagDto> create(@RequestBody TagDto tagDto) {
         TagDto saveTag = tagService.save(tagDto);
