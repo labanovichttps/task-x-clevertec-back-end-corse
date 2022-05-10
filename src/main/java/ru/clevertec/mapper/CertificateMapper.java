@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.clevertec.dto.CertificateDto;
 import ru.clevertec.dto.CertificateFilter;
 import ru.clevertec.dto.TagDto;
+import ru.clevertec.dto.UpdateCertificatePriceDto;
 import ru.clevertec.entity.Certificate;
 import ru.clevertec.entity.Tag;
 import ru.clevertec.service.TagService;
@@ -33,6 +34,7 @@ public abstract class CertificateMapper {
     public abstract Certificate toCertificate(CertificateDto certificateDto);
 
     @Mapping(target = "tags", qualifiedByName = "mapListTags")
+    @Mapping(target = "lastUpdateDate", expression = "java(java.time.LocalDateTime.now())")
     public abstract void updateFromCertificateDto(CertificateDto certificateDto, @MappingTarget Certificate certificate);
 
     @Mapping(target = "id", ignore = true)
@@ -42,6 +44,15 @@ public abstract class CertificateMapper {
     @Mapping(target = "createDate", ignore = true)
     @Mapping(target = "lastUpdateDate", ignore = true)
     public abstract Certificate filterToCertificate(CertificateFilter certificateFilter);
+
+    @Mapping(target = "tags", ignore = true)
+    @Mapping(target = "name", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "duration", ignore = true)
+    @Mapping(target = "description", ignore = true)
+    @Mapping(target = "createDate", ignore = true)
+    @Mapping(target = "lastUpdateDate", expression = "java(java.time.LocalDateTime.now())")
+    public abstract void updateFromCertificatePriceDto(UpdateCertificatePriceDto priceDto, @MappingTarget Certificate certificate);
 
     @Named(value = "mapListTags")
     public List<Tag> mapListTags(List<TagDto> tagsDto) {

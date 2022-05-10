@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public ReadOrderDto makeOrder(MakeOrderDto orderDto) {
+    public ReadOrderDto make(MakeOrderDto orderDto) {
         ReadUserDto userDto = userService.findById(orderDto.getUserId());
         CertificateDto certificate = certificateService.findById(orderDto.getCertificateId());
 
@@ -64,7 +64,8 @@ public class OrderServiceImpl implements OrderService {
                 .totalPrice(certificate.getPrice())
                 .build();
 
-        Order saveOrder = orderRepository.save(unsavedOrder);
+        Order saveOrder = orderRepository.saveAndFlush(unsavedOrder);
         return orderMapper.toReadOrderDto(saveOrder);
     }
 }
+

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,11 @@ import ru.clevertec.dto.TagDto;
 import ru.clevertec.dto.TagFilter;
 import ru.clevertec.service.TagService;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+
 @Slf4j
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/tags")
@@ -28,13 +33,13 @@ public class TagController {
     private final TagService tagService;
 
     @GetMapping
-    public PageResponse<TagDto> find(TagFilter filter, Pageable pageable) {
+    public PageResponse<TagDto> find(@Valid TagFilter filter, Pageable pageable) {
         Page<TagDto> tags = tagService.find(filter, pageable);
         return PageResponse.of(tags);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TagDto> findById(@PathVariable Long id) {
+    public ResponseEntity<TagDto> findById(@PathVariable @Positive Long id) {
         TagDto tagDto = tagService.findById(id);
         return new ResponseEntity<>(tagDto, HttpStatus.OK);
     }
@@ -51,14 +56,14 @@ public class TagController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TagDto> update(@PathVariable Long id,
-                                         @RequestBody TagDto tagDto) {
+    public ResponseEntity<TagDto> update(@PathVariable @Positive Long id,
+                                         @RequestBody @Valid TagDto tagDto) {
         TagDto updateTag = tagService.update(id, tagDto);
         return new ResponseEntity<>(updateTag, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable @Positive Long id) {
         tagService.remove(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

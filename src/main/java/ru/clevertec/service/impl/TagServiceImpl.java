@@ -22,7 +22,6 @@ public class TagServiceImpl implements TagService {
 
     private static final String TAG_LABEL = "Tag";
     private static final String ID_LABEL = "id";
-    private static final String NAME_LABEL = "name";
     private final TagRepository tagRepository;
     private final TagMapper tagMapper;
 
@@ -31,7 +30,7 @@ public class TagServiceImpl implements TagService {
         ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("name", match -> match.contains().ignoreCase());
         return tagRepository.findAll(
-                        Example.of(tagMapper.toTag(filter), matcher), pageable)
+                        Example.of(tagMapper.filterToTag(filter), matcher), pageable)
                 .map(tagMapper::tagToDto);
     }
 

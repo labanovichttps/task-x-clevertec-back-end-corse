@@ -10,13 +10,12 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CertificateDto {
+public class ReadCertificateDto {
 
     @Positive
     private Long id;
@@ -34,5 +33,4 @@ public class CertificateDto {
     private Long duration;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
-    private List<TagDto> tags;
 }

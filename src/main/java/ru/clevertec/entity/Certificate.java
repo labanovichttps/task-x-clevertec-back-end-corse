@@ -40,17 +40,16 @@ public class Certificate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @NotBlank
+    @Column(nullable = false)
     private String description;
 
-    @Positive
+    @Column(nullable = false)
     private BigDecimal price;
 
-    @Positive
+    @Column(nullable = false)
     private Long duration;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

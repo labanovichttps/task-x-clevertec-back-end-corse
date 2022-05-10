@@ -4,20 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.clevertec.constants.ApplicationConstants;
 
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.math.BigDecimal;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReadUserDto {
+public class UpdateCertificatePriceDto {
 
     @Positive
-    private Long id;
-
-    @Pattern(regexp = ApplicationConstants.VALID_STRING_REGEX)
-    private String login;
+    @NotNull
+    private BigDecimal price;
 }

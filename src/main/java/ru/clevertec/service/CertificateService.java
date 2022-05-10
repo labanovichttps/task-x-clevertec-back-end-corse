@@ -4,22 +4,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import ru.clevertec.dto.CertificateDto;
 import ru.clevertec.dto.CertificateFilter;
+import ru.clevertec.dto.UpdateCertificatePriceDto;
 
 import java.util.List;
 
 public interface CertificateService {
 
-    Page<CertificateDto> getCertificates(CertificateFilter certificateFilter, Pageable pageable);
+    Page<CertificateDto> find(CertificateFilter certificateFilter, Pageable pageable);
 
     CertificateDto findById(Long id);
 
-    List<CertificateDto> getCertificatesByTagName(String tagName);
+    List<CertificateDto> findByTagName(String tagName);
 
-    CertificateDto saveCertificate(CertificateDto certificateDto);
+    CertificateDto save(CertificateDto certificateDto);
 
-    CertificateDto updateCertificate(Long id, CertificateDto certificateDto);
+    CertificateDto update(Long id, CertificateDto certificateDto);
 
-    CertificateDto updateCertificatePrice(Long id, CertificateDto certificateDto);
+    CertificateDto updatePrice(Long id, UpdateCertificatePriceDto updateCertificatePriceDto);
 
-    void removeCertificate(Long id);
+    void remove(Long id);
 }

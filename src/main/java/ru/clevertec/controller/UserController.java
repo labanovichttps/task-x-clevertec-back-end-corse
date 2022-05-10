@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,9 @@ import ru.clevertec.dto.ReadUserDto;
 import ru.clevertec.dto.UserDto;
 import ru.clevertec.service.UserService;
 
+import javax.validation.constraints.Positive;
+
+@Validated
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -29,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReadUserDto> findById(@PathVariable Long id) {
+    public ResponseEntity<ReadUserDto> findById(@PathVariable @Positive Long id) {
         ReadUserDto user = userService.findById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

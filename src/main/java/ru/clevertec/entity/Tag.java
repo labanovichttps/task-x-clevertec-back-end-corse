@@ -25,7 +25,6 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column(unique = true, nullable = false)
     private String name;
 }

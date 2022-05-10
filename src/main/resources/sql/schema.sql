@@ -1,11 +1,18 @@
+drop table if exists gift_certificate_tag;
+drop table if exists tag;
+drop table if exists orders;
+drop table if exists gift_certificate;
+drop table if exists users;
+
+
 create table gift_certificate
 (
     id               BIGSERIAL PRIMARY KEY,
-    name             VARCHAR(255) NOT NULL,
-    description      VARCHAR(255),
-    price            DECIMAL(19, 2),
-    duration         BIGINT,
-    create_date      TIMESTAMP,
+    name             VARCHAR(255)   NOT NULL,
+    description      VARCHAR(255)   NOT NULL,
+    price            DECIMAL(19, 2) NOT NULL,
+    duration         BIGINT         NOT NULL,
+    create_date      TIMESTAMP      NOT NULL,
     last_update_date TIMESTAMP
 );
 
@@ -33,4 +40,16 @@ create table users
 (
     id    bigserial primary key,
     login varchar(255) unique not null
-)
+);
+
+create table orders
+(
+    id             bigserial
+        primary key,
+    user_id        bigint         not null
+        references users,
+    certificate_id bigint         not null
+        references gift_certificate,
+    order_date     timestamp      not null,
+    total_price    numeric(19, 2) not null
+);

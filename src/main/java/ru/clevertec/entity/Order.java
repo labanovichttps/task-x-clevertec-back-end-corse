@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,16 +34,16 @@ public class Order {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToOne
-    @JoinColumn(name = "certificate_id")
+    @JoinColumn(name = "certificate_id", nullable = false)
     private Certificate certificate;
 
-    @NotNull
+    @Column(nullable = false)
     private LocalDateTime orderDate;
 
-    @Positive
+    @Column(nullable = false)
     private BigDecimal totalPrice;
 }

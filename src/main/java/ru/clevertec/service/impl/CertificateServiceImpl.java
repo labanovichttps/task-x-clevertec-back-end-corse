@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.dto.CertificateDto;
 import ru.clevertec.dto.CertificateFilter;
+import ru.clevertec.dto.UpdateCertificatePriceDto;
 import ru.clevertec.entity.Certificate;
 import ru.clevertec.exception.EntityNotFoundException;
 import ru.clevertec.mapper.CertificateMapper;
-import ru.clevertec.mapper.TagMapper;
 import ru.clevertec.repository.CertificateRepository;
 import ru.clevertec.service.CertificateService;
 
@@ -30,9 +30,9 @@ public class CertificateServiceImpl implements CertificateService {
     private static final String ID_LABEL = "id";
     private final CertificateRepository certificateRepository;
     private final CertificateMapper certificateMapper;
-    private final TagMapper tagMapper;
 
-    public Page<CertificateDto> getCertificates(CertificateFilter filter, Pageable pageable) {
+    @Override
+    public Page<CertificateDto> find(CertificateFilter filter, Pageable pageable) {
         ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withMatcher("description", match -> match.contains().ignoreCase())
                 .withMatcher("name", match -> match.contains().contains().ignoreCase());
@@ -49,7 +49,7 @@ public class CertificateServiceImpl implements CertificateService {
     }
 
     @Override
-    public List<CertificateDto> getCertificatesByTagName(String tagName) {
+    public List<CertificateDto> findByTagName(String tagName) {
         return certificateRepository.findCertificateBy(tagName).stream()
                 .map(certificateMapper::toCertificateDto)
                 .collect(toList());
@@ -57,9 +57,8 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Transactional
     @Override
-    public CertificateDto saveCertificate(CertificateDto certificateDto) {
+    public CertificateDto save(CertificateDto certificateDto) {
         certificateDto.setCreateDate(LocalDateTime.now());
-        //db lvl?
         Certificate certificate = certificateMapper.toCertificate(certificateDto);
         Certificate saveCertificate = certificateRepository.save(certificate);
         return certificateMapper.toCertificateDto(saveCertificate);
@@ -67,7 +66,7 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Transactional
     @Override
-    public CertificateDto updateCertificate(Long id, CertificateDto certificateDto) {
+    public CertificateDto update(Long id, CertificateDto certificateDto) {
         return certificateRepository.findById(id)
                 .map(certificate -> {
                     certificateMapper.updateFromCertificateDto(certificateDto, certificate);
@@ -79,11 +78,10 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Transactional
     @Override
-    public CertificateDto updateCertificatePrice(Long id, CertificateDto certificateDto) {
+    public CertificateDto updatePrice(Long id, UpdateCertificatePriceDto certificatePriceDto) {
         return certificateRepository.findById(id)
                 .map(certificate -> {
-                    certificate.setPrice(certificateDto.getPrice());
-                    certificate.setLastUpdateDate(LocalDateTime.now());
+                    certificateMapper.updateFromCertificatePriceDto(certificatePriceDto, certificate);
                     Certificate saveCertificate = certificateRepository
                             .saveAndFlush(certificate);
                     return certificateMapper.toCertificateDto(saveCertificate);
@@ -92,7 +90,7 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Transactional
     @Override
-    public void removeCertificate(Long id) {
+    public void remove(Long id) {
         certificateRepository.findById(id)
                 .map(certificate -> {
                     certificateRepository.delete(certificate);
