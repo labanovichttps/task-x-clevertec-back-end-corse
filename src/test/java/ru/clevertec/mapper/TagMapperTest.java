@@ -15,7 +15,6 @@ class TagMapperTest {
             .id(1L)
             .name("IT")
             .build();
-
     private final TagDto tagDto = TagDto.builder()
             .id(1L)
             .name("IT")
@@ -23,13 +22,13 @@ class TagMapperTest {
 
     @Test
     void checkTagToDto() {
-        TagDto actualDto = tagMapper.tagToDto(tag);
+        TagDto actualDto = tagMapper.toTagDto(tag);
         assertEquals(actualDto, tagDto);
     }
 
     @Test
     void checkTagDtoToTag() {
-        TagDto actualTag = tagMapper.tagToDto(tag);
+        TagDto actualTag = tagMapper.toTagDto(tag);
         assertEquals(actualTag, tagDto);
     }
 
@@ -61,11 +60,11 @@ class TagMapperTest {
                 .id(1L)
                 .name("oldTagName")
                 .build();
-        TagDto newTagDto = TagDto.builder()
+        TagDto tagDto = TagDto.builder()
                 .id(null)
                 .name(null)
                 .build();
-        tagMapper.updateTagFromTagDto(newTagDto, oldTag);
+        tagMapper.updateTagFromTagDto(tagDto, oldTag);
 
         assertEquals(oldTag, oldTag);
     }

@@ -50,7 +50,7 @@ public class CertificateServiceImpl implements CertificateService {
 
     @Override
     public List<CertificateDto> findByTagName(String tagName) {
-        return certificateRepository.findCertificateBy(tagName).stream()
+        return certificateRepository.findCertificatesBy(tagName).stream()
                 .map(certificateMapper::toCertificateDto)
                 .collect(toList());
     }

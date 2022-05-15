@@ -12,7 +12,7 @@ import ru.clevertec.entity.Tag;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface TagMapper {
 
-    TagDto tagToDto(Tag tag);
+    TagDto toTagDto(Tag tag);
 
     Tag toTag(TagDto tagDto);
 

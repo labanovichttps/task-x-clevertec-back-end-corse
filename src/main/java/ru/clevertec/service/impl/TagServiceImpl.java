@@ -31,27 +31,27 @@ public class TagServiceImpl implements TagService {
                 .withMatcher("name", match -> match.contains().ignoreCase());
         return tagRepository.findAll(
                         Example.of(tagMapper.filterToTag(filter), matcher), pageable)
-                .map(tagMapper::tagToDto);
+                .map(tagMapper::toTagDto);
     }
 
     @Override
     public TagDto findById(Long id) {
         return tagRepository.findById(id)
-                .map(tagMapper::tagToDto)
+                .map(tagMapper::toTagDto)
                 .orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, id));
     }
 
     @Override
     public TagDto findByNameOrSave(TagDto tagDto) {
         return tagRepository.findByName(tagDto.getName())
-                .map(tagMapper::tagToDto)
+                .map(tagMapper::toTagDto)
                 .orElseGet(() -> save(tagDto));
     }
 
     @Override
     public TagDto findTheMostWidelyTag() {
         return tagRepository.findTheMostWidelyTag()
-                .map(tagMapper::tagToDto)
+                .map(tagMapper::toTagDto)
                 .orElseThrow(() -> new EntityNotFoundException("The most widely tag hasn't found."));
     }
 
@@ -60,7 +60,7 @@ public class TagServiceImpl implements TagService {
     public TagDto save(TagDto tagDto) {
         Tag tag = tagMapper.toTag(tagDto);
         Tag saveTag = tagRepository.save(tag);
-        return tagMapper.tagToDto(saveTag);
+        return tagMapper.toTagDto(saveTag);
     }
 
     @Transactional
@@ -70,8 +70,9 @@ public class TagServiceImpl implements TagService {
                 .map(tag -> {
                     tagMapper.updateTagFromTagDto(tagDto, tag);
                     Tag saveTag = tagRepository.saveAndFlush(tag);
-                    return tagMapper.tagToDto(saveTag);
-                }).orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, id));
+                    return tagMapper.toTagDto(saveTag);
+                })
+                .orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, id));
     }
 
     @Transactional
