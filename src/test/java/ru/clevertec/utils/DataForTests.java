@@ -1,6 +1,7 @@
 package ru.clevertec.utils;
 
 import ru.clevertec.dto.CertificateDto;
+import ru.clevertec.dto.ReadOrderDto;
 import ru.clevertec.dto.ReadUserDto;
 import ru.clevertec.dto.TagDto;
 import ru.clevertec.entity.Certificate;
@@ -106,6 +107,14 @@ public final class DataForTests {
         return ReadUserDto.builder()
                 .id(id)
                 .login(login)
+                .build();
+    }
+
+    public static ReadOrderDto createReadOderDto(Long id, LocalDateTime orderDate, BigDecimal totalPrice){
+        return ReadOrderDto.builder()
+                .id(id)
+                .orderDate(orderDate)
+                .totalPrice(totalPrice)
                 .build();
     }
 }

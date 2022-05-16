@@ -3,17 +3,9 @@ package ru.clevertec.mapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.clevertec.entity.Certificate;
-import ru.clevertec.entity.Tag;
-import ru.clevertec.repository.TagRepository;
 import ru.clevertec.service.impl.TagServiceImpl;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 class CertificateMapperTest {
