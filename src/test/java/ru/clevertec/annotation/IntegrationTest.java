@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 @Transactional
 @SpringBootTest
 public @interface IntegrationTest {
