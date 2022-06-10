@@ -73,7 +73,7 @@ public class ApplicationExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<?> handleBindException(BindException e){
+    public ResponseEntity<?> handleBindException(BindException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ErrorDto.builder()
                         .message(e.getAllErrors().toString())
@@ -83,7 +83,7 @@ public class ApplicationExceptionHandler {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException e){
+    public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ErrorDto.builder()
                         .message(e.getMessage())
@@ -93,7 +93,7 @@ public class ApplicationExceptionHandler {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<?> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e){
+    public ResponseEntity<?> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ErrorDto.builder()
                         .message(e.getMessage())
