@@ -1,4 +1,4 @@
-package ru.clevertec.service.impl;
+package ru.clevertec.mapper.impl;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,6 +19,7 @@ import ru.clevertec.mapper.UserMapper;
 import ru.clevertec.repository.OrderRepository;
 import ru.clevertec.service.CertificateService;
 import ru.clevertec.service.UserService;
+import ru.clevertec.service.impl.OrderServiceImpl;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

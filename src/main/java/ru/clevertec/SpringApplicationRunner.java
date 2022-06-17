@@ -2,8 +2,10 @@ package ru.clevertec;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import ru.clevertec.service.OrderSequenceService;
 
+@EnableScheduling
 @SpringBootApplication
 public class SpringApplicationRunner {
 

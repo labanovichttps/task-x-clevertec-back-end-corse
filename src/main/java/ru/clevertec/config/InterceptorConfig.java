@@ -17,10 +17,10 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(entityInterceptor)
-                .addPathPatterns("/api/tags")
-                .addPathPatterns("/api/certificates")
-                .addPathPatterns("/api/users");
+                .addPathPatterns("/tags")
+                .addPathPatterns("/certificates")
+                .addPathPatterns("/users");
         registry.addInterceptor(orderInterceptor)
-                .addPathPatterns("/api/orders/**");
+                .addPathPatterns("/orders/**");
     }
 }
