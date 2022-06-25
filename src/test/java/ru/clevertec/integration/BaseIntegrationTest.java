@@ -7,27 +7,25 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
-import ru.clevertec.annotation.IntegrationTest;
+import ru.clevertec.integration.annotation.IntegrationTest;
 
-//@IntegrationTest
-//@Sql({
-//        "classpath:sql/data.sql"
-//})
+@IntegrationTest
+@Sql({
+        "classpath:db/data.sql"
+})
 @SpringBootTest
 @Transactional
-public interface BaseIntegrationTest {
+public abstract class BaseIntegrationTest {
 
-    PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:14");
+    private static final PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:latest");
 
     @BeforeAll
     static void runContainer(){
-        postgreSQLContainer.start();
+        container.start();
     }
 
     @DynamicPropertySource
     static void postgresProperties(DynamicPropertyRegistry registry){
-        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
-        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
+        registry.add("spring.datasource.url", container::getJdbcUrl);
     }
 }

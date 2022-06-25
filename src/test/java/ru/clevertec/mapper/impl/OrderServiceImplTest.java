@@ -58,8 +58,6 @@ class OrderServiceImplTest {
 
     private static final Long ID = 1L;
 
-
-
     @Test
     void findById() {
         Order order = createOrder(ID, null, null, LocalDateTime.now(), BigDecimal.valueOf(123));
@@ -74,44 +72,5 @@ class OrderServiceImplTest {
         Assertions.assertEquals(actual, readOrderDto);
 
     }
-
-//    @Test
-//    void make() {
-//        MakeOrderDto makeOrderDto = MakeOrderDto.builder()
-//                .userId(1L)
-//                .certificateId(1L)
-//                .build();
-//        User user = createUser(1L, "login", null);
-//        ReadUserDto userDto = createReadUserDto(1L, "login");
-//        Certificate certificate = Certificate.builder()
-//                .id(1L)
-//                .name("certificateName")
-//                .build();
-//        CertificateDto certificateDto = CertificateDto.builder()
-//                .id(1L)
-//                .name("certificateName")
-//                .build();
-//        Order order = createOrder(1L, user, certificate, LocalDateTime.now(), certificate.getPrice());
-//        ReadOrderDto orderDto = createReadOderDto(order.getId(), order.getOrderDate(), order.getTotalPrice());
-//
-//        doReturn(userDto)
-//                .when(userService).findById(user.getId());
-//        doReturn(certificateDto)
-//                .when(certificateService).findById(certificate.getId());
-//        doReturn(user)
-//                .when(userMapper).readUserDtoToUser(userDto);
-//        doReturn(certificate)
-//                .when(certificateMapper).toCertificate(certificateDto);
-//        doReturn(user)
-//                .when(userMapper).readUserDtoToUser(userDto);
-//        doReturn(order)
-//                .when(orderRepository).saveAndFlush(order);
-//        doReturn(orderDto)
-//                .when(orderMapper).toReadOrderDto(order);
-//
-//        ReadOrderDto actual = orderService.make(makeOrderDto);
-//        Assertions.assertEquals(actual, orderDto);
-//    }
-
 
 }
