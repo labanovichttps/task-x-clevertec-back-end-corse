@@ -20,7 +20,6 @@ class TagServiceImplTest extends BaseIntegrationTest {
 
     private final TagService tagService;
     private final Long EXISTS_TAG_ID = 1L;
-    private final String TAG_NAME = "SPORT";
     private static final String NEW_TAG_NAME = "NEW_TAG_NAME";
     private final Long DOES_NOT_EXISTS_TAG_ID = 420L;
 
@@ -49,7 +48,8 @@ class TagServiceImplTest extends BaseIntegrationTest {
 
     @Test
     void findByNameAndReturnTag() {
-        TagDto tagDto = new TagDto(EXISTS_TAG_ID, TAG_NAME);
+        String existsTagName = "SPORT";
+        TagDto tagDto = new TagDto(EXISTS_TAG_ID, existsTagName);
         TagDto actual = tagService.findByNameOrSave(tagDto);
         assertEquals(tagDto, actual);
     }
@@ -81,6 +81,7 @@ class TagServiceImplTest extends BaseIntegrationTest {
         assertEquals(tagDtoForSave.getName(), actualTag.getName());
     }
 
+
     @Test
     void updateTagAndDoesntThrow() {
         TagDto tagDtoForUpdate = TagDto.builder()
@@ -88,6 +89,14 @@ class TagServiceImplTest extends BaseIntegrationTest {
                 .build();
         TagDto actualTag = tagService.update(EXISTS_TAG_ID, tagDtoForUpdate);
         assertEquals(tagDtoForUpdate.getName(), actualTag.getName());
+    }
+
+    @Test
+    void updateTagAndThrowEntityNotFoundExceptionIfTagDoesNotExists() {
+        TagDto tagDtoForUpdate = TagDto.builder()
+                .name(NEW_TAG_NAME)
+                .build();
+        assertThrows(EntityNotFoundException.class, () -> tagService.update(DOES_NOT_EXISTS_TAG_ID, tagDtoForUpdate));
     }
 
     @Test
