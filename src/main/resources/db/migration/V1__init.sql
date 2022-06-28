@@ -46,3 +46,5 @@ CREATE TABLE orders
     order_date     TIMESTAMP      NOT NULL,
     total_price    NUMERIC(19, 2) NOT NULL
 );
+
+

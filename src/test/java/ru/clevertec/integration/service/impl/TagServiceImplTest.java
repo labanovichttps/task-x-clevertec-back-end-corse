@@ -77,7 +77,7 @@ class TagServiceImplTest extends BaseIntegrationTest {
         TagDto tagDtoForSave = TagDto.builder()
                 .name(NEW_TAG_NAME)
                 .build();
-        TagDto actualTag = tagService.save(tagDtoForSave);
+        TagDto actualTag = tagService.save(tagDtoForSave, null);
         assertEquals(tagDtoForSave.getName(), actualTag.getName());
     }
 
@@ -87,7 +87,7 @@ class TagServiceImplTest extends BaseIntegrationTest {
         TagDto tagDtoForUpdate = TagDto.builder()
                 .name(NEW_TAG_NAME)
                 .build();
-        TagDto actualTag = tagService.update(EXISTS_TAG_ID, tagDtoForUpdate);
+        TagDto actualTag = tagService.update(EXISTS_TAG_ID, tagDtoForUpdate, null);
         assertEquals(tagDtoForUpdate.getName(), actualTag.getName());
     }
 
@@ -96,16 +96,16 @@ class TagServiceImplTest extends BaseIntegrationTest {
         TagDto tagDtoForUpdate = TagDto.builder()
                 .name(NEW_TAG_NAME)
                 .build();
-        assertThrows(EntityNotFoundException.class, () -> tagService.update(DOES_NOT_EXISTS_TAG_ID, tagDtoForUpdate));
+        assertThrows(EntityNotFoundException.class, () -> tagService.update(DOES_NOT_EXISTS_TAG_ID, tagDtoForUpdate, null));
     }
 
     @Test
     void removeTagAndThrowEntityNotFoundException() {
-        assertThrows(EntityNotFoundException.class, () -> tagService.remove(DOES_NOT_EXISTS_TAG_ID));
+        assertThrows(EntityNotFoundException.class, () -> tagService.remove(DOES_NOT_EXISTS_TAG_ID, null));
     }
 
     @Test
     void removeTagAndDoeNotThrow() {
-        assertDoesNotThrow(() -> tagService.remove(EXISTS_TAG_ID));
+        assertDoesNotThrow(() -> tagService.remove(EXISTS_TAG_ID, null));
     }
 }

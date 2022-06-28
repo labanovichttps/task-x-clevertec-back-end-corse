@@ -77,13 +77,13 @@ public class OrderInterceptor implements HandlerInterceptor {
         String orderBody = requestWrapper.getBody();
         MakeOrderDto makeOrderDto = objectMapper.readValue(orderBody, MakeOrderDto.class);
         increaseSequenceInNextNode(portIndex, maxOrderSequence);
-        ReadOrderDto entity = nodesConfig.getNodes().get(mainPort).stream()
-                .filter(healthCheckService::isAlive)
-                .map(port -> CompletableFuture.supplyAsync(() ->
-                        restTemplate.postForObject(replaceURL(request, port), makeOrderDto, ReadOrderDto.class)))
-                .map(CompletableFuture::join)
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        List<Integer> portsForPost = nodesConfig.getNodes().get(mainPort);
+        ReadOrderDto entity = null;
+        for (Integer port : portsForPost) {
+            if (healthCheckService.isAlive(port)){
+                entity = restTemplate.postForObject(replaceURL(request, port), makeOrderDto, ReadOrderDto.class);
+            }
+        }
         writeResponse(response, entity);
     }
 
@@ -128,7 +128,7 @@ public class OrderInterceptor implements HandlerInterceptor {
 
     private String replaceURL(HttpServletRequest request, Integer port) {
         return request.getRequestURL().toString().replace(String.valueOf(request.getLocalPort()), String.valueOf(port))
-               + "?" + REQUEST_FROM_CLIENT + "=false";
+               + "?request_from_client=false";
     }
 
     private Long findIdInUrl(HttpServletRequest request) {

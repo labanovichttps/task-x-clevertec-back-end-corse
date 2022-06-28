@@ -1,12 +1,16 @@
 package ru.clevertec.event.entity;
 
+import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
+import ru.clevertec.dto.ChangeLogDto;
 
-import java.util.EventObject;
-
+@Getter
 public class EntityEvent extends ApplicationEvent {
 
-    public EntityEvent(Object source) {
+    private ChangeLogDto changeLogDto;
+
+    public EntityEvent(Object source, ChangeLogDto changeLogDto) {
         super(source);
+        this.changeLogDto = changeLogDto;
     }
 }

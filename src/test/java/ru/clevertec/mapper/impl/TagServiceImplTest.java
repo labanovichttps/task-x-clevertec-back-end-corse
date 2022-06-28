@@ -119,7 +119,7 @@ class TagServiceImplTest {
         doReturn(tagForSave)
                 .when(tagMapper).toTag(tagForSaveDto);
 
-        TagDto actual = tagService.save(tagForSaveDto);
+        TagDto actual = tagService.save(tagForSaveDto, null);
         assertEquals(actual, tagForSaveDto);
     }
 
@@ -139,7 +139,7 @@ class TagServiceImplTest {
         doReturn(updatedTagDto)
                 .when(tagMapper).toTagDto(updatedTag);
 
-        TagDto actual = tagService.update(tag.getId(), tagForSaveDto);
+        TagDto actual = tagService.update(tag.getId(), tagForSaveDto, null);
         assertThat(actual.getName()).isEqualTo(tagForSaveDto.getName());
 
     }
@@ -152,7 +152,7 @@ class TagServiceImplTest {
         doNothing()
                 .when(tagRepository).delete(tag);
 
-        assertDoesNotThrow(() -> tagService.remove(tag.getId()));
+        assertDoesNotThrow(() -> tagService.remove(tag.getId(), null));
     }
 
 

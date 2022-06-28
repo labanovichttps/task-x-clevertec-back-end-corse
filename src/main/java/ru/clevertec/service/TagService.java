@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import ru.clevertec.dto.TagDto;
 import ru.clevertec.dto.TagFilter;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface TagService {
 
     Page<TagDto> find(TagFilter filter, Pageable pageable);
@@ -15,9 +17,9 @@ public interface TagService {
 
     TagDto findTheMostWidelyTag();
 
-    TagDto save(TagDto tagDto);
+    TagDto save(TagDto tagDto, HttpServletRequest request);
 
-    TagDto update(Long id, TagDto tagDto);
+    TagDto update(Long id, TagDto tagDto, HttpServletRequest request);
 
-    void remove(Long id);
+    void remove(Long id, HttpServletRequest request);
 }
