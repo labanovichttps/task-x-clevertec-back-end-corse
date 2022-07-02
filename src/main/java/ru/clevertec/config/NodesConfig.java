@@ -16,7 +16,6 @@ import static java.util.stream.Collectors.toList;
 public class NodesConfig {
 
     private Map<Integer, List<Integer>> nodes;
-    private Integer currentNode;
 
     public List<Integer> getNodesFromMap() {
         return nodes.values().stream()

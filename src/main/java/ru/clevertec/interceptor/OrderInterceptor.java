@@ -80,7 +80,7 @@ public class OrderInterceptor implements HandlerInterceptor {
         List<Integer> portsForPost = nodesConfig.getNodes().get(mainPort);
         ReadOrderDto entity = null;
         for (Integer port : portsForPost) {
-            if (healthCheckService.isAlive(port)){
+            if (healthCheckService.isAlive(port)) {
                 entity = restTemplate.postForObject(replaceURL(request, port), makeOrderDto, ReadOrderDto.class);
             }
         }

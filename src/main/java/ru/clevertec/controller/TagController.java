@@ -15,13 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
 import ru.clevertec.dto.PageResponse;
 import ru.clevertec.dto.TagDto;
 import ru.clevertec.dto.TagFilter;
 import ru.clevertec.service.TagService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
@@ -55,22 +53,20 @@ public class TagController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TagDto createTag(@RequestBody @Valid TagDto tagDto, HttpServletRequest request) {
-        return tagService.save(tagDto, request);
+    public TagDto createTag(@RequestBody @Valid TagDto tagDto) {
+        return tagService.save(tagDto);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TagDto updateTag(@PathVariable @Positive Long id,
-                            @RequestBody @Valid TagDto tagDto,
-                            HttpServletRequest request) {
-        return tagService.update(id, tagDto, request);
+                            @RequestBody @Valid TagDto tagDto) {
+        return tagService.update(id, tagDto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTag(@PathVariable @Positive Long id,
-                          HttpServletRequest request) {
-        tagService.remove(id, request);
+    public void deleteTag(@PathVariable @Positive Long id) {
+        tagService.remove(id);
     }
 }

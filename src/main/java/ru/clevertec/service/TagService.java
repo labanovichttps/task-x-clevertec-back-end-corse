@@ -17,9 +17,9 @@ public interface TagService {
 
     TagDto findTheMostWidelyTag();
 
-    TagDto save(TagDto tagDto, HttpServletRequest request);
+    TagDto save(TagDto tagDto);
 
-    TagDto update(Long id, TagDto tagDto, HttpServletRequest request);
+    TagDto update(Long id, TagDto tagDto);
 
-    void remove(Long id, HttpServletRequest request);
+    void remove(Long id);
 }

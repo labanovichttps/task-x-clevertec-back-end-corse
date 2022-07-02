@@ -13,8 +13,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import ru.clevertec.config.NodesConfig;
-import ru.clevertec.dto.ChangeLogDto;
-import ru.clevertec.event.entity.EntityEvent;
 import ru.clevertec.service.HealthCheckService;
 import ru.clevertec.wrapper.CustomHttpServletRequestWrapper;
 
