@@ -3,7 +3,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: password
-    url: jdbc:postgresql://dbpostgresql:5433/node_9000
+    url: ${SPRING_DATASOURCE_URL}
   jpa:
     show-sql: true
     properties:
@@ -19,17 +19,17 @@ server:
   servlet:
     context-path: /api
 
-#cluster:
-#  nodes:
-#    9000:
-#      - 9000
-#      - 9003
-#      - 9004
-#    9001:
-#      - 9001
-#      - 9005
-#      - 9006
-#    9002:
-#      - 9002
-#      - 9007
-#      - 9008
+cluster:
+  nodes:
+    9000:
+      - 9000
+      - 9003
+      - 9004
+    9001:
+      - 9001
+      - 9005
+      - 9006
+    9002:
+      - 9002
+      - 9007
+      - 9008

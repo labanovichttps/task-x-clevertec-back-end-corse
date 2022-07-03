@@ -29,6 +29,7 @@ public class HealthCheckServiceImpl implements HealthCheckService {
         List<Integer> nodes = nodesConfig.getNodes().values().stream()
                 .flatMap(Collection::stream)
                 .collect(toList());
+        log.error(nodes +"");
         nodes.forEach(port -> {
             try {
                 HttpStatus status = restTemplate.getForObject(replaceUrl(port), HttpStatus.class);

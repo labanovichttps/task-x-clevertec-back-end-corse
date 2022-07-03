@@ -4,7 +4,6 @@ plugins {
     id "io.spring.dependency-management" version "1.0.11.RELEASE"
     id "io.freefair.lombok" version "6.4.3"
     id 'jacoco'
-    id 'com.palantir.docker' version '0.22.1'
 }
 
 group 'ru.clevertec'
@@ -23,12 +22,6 @@ compileJava {
     options.compilerArgs = [
             '-Amapstruct.defaultComponentModel=spring'
     ]
-}
-
-docker {
-    name "${project.name}:${project.version}"
-    files "$buildDir/libs/${project.name}-${project.version}.jar"
-    buildArgs([JAR_FILE: "${project.name}-${project.version}.jar"])
 }
 
 dependencies {

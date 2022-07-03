@@ -1,16 +1,20 @@
 version: "3"
 services:
-  springboot-app1:
-    image: node-1
+  ##1
+  springboot-app0:
+    image: node-0
     build: .
     environment:
       PORT: 9000
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dbpostgresql0:5432/node_9000
     ports:
       - 9000:9000
     depends_on:
-      - dbpostgresql
-  dbpostgresql:
-    container_name: some_postgres
+      - dbpostgresql0
+    networks:
+      - app-network
+  dbpostgresql0:
+    container_name: some_postgres0
     image: postgres:14.0
     ports:
       - "5433:5432"
@@ -18,3 +22,201 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
       POSTGRES_DB: node_9000
+    networks:
+      - app-network
+  ##2
+  springboot-app1:
+    image: node-1
+    build: .
+    environment:
+      PORT: 9001
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dbpostgresql1:5432/node_9001
+    ports:
+      - 9001:9001
+    depends_on:
+      - dbpostgresql1
+    networks:
+      - app-network
+  dbpostgresql1:
+    container_name: some_postgres1
+    image: postgres:14.0
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: node_9001
+    networks:
+      - app-network
+  ##3
+  springboot-app2:
+    image: node-2
+    build: .
+    environment:
+      PORT: 9002
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dbpostgresql2:5432/node_9002
+    ports:
+      - 9002:9002
+    depends_on:
+      - dbpostgresql2
+    networks:
+      - app-network
+  dbpostgresql2:
+    container_name: some_postgres2
+    image: postgres:14.0
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: node_9002
+    networks:
+      - app-network
+  ##4
+  springboot-app3:
+    image: node-3
+    build: .
+    environment:
+      PORT: 9003
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dbpostgresql3:5432/node_9003
+    ports:
+      - 9003:9003
+    depends_on:
+      - dbpostgresql3
+    networks:
+      - app-network
+  dbpostgresql3:
+    container_name: some_postgres3
+    image: postgres:14.0
+    ports:
+      - "5436:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: node_9003
+    networks:
+      - app-network
+  ##5
+  springboot-app4:
+    image: node-4
+    build: .
+    environment:
+      PORT: 9004
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dbpostgresql4:5432/node_9004
+    ports:
+      - 9004:9004
+    depends_on:
+      - dbpostgresql4
+    networks:
+      - app-network
+  dbpostgresql4:
+    container_name: some_postgres4
+    image: postgres:14.0
+    ports:
+      - "5437:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: node_9004
+    networks:
+      - app-network
+  ##6
+  springboot-app5:
+    image: node-5
+    build: .
+    environment:
+      PORT: 9005
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dbpostgresql5:5432/node_9005
+    ports:
+      - 9005:9005
+    depends_on:
+      - dbpostgresql5
+    networks:
+      - app-network
+  dbpostgresql5:
+    container_name: some_postgres5
+    image: postgres:14.0
+    ports:
+      - "5438:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: node_9005
+    networks:
+      - app-network
+  ##7
+  springboot-app6:
+    image: node-6
+    build: .
+    environment:
+      PORT: 9006
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dbpostgresql6:5432/node_9006
+    ports:
+      - 9006:9006
+    depends_on:
+      - dbpostgresql6
+    networks:
+      - app-network
+  dbpostgresql6:
+    container_name: some_postgres6
+    image: postgres:14.0
+    ports:
+      - "5440:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: node_9006
+    networks:
+      - app-network
+  ##8
+  springboot-app7:
+    image: node-7
+    build: .
+    environment:
+      PORT: 9007
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dbpostgresql7:5432/node_9007
+    ports:
+      - 9007:9007
+    depends_on:
+      - dbpostgresql7
+    networks:
+      - app-network
+  dbpostgresql7:
+    container_name: some_postgres7
+    image: postgres:14.0
+    ports:
+      - "5441:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: node_9007
+    networks:
+      - app-network
+  ##9
+  springboot-app8:
+    image: node-8
+    build: .
+    environment:
+      PORT: 9008
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dbpostgresql8:5432/node_9008
+    ports:
+      - 9008:9008
+    depends_on:
+      - dbpostgresql8
+    networks:
+      - app-network
+  dbpostgresql8:
+    container_name: some_postgres8
+    image: postgres:14.0
+    ports:
+      - "5442:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: node_9007
+    networks:
+      - app-network
+##network section
+networks:
+  app-network:
+    driver: bridge
