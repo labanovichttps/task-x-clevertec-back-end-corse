@@ -1,7 +1,7 @@
 version: "3"
 services:
   ##1
-  springboot-app0:
+  springboot-app9000:
     image: node-0
     build: .
     environment:
@@ -25,7 +25,7 @@ services:
     networks:
       - app-network
   ##2
-  springboot-app1:
+  springboot-app9001:
     image: node-1
     build: .
     environment:
@@ -49,7 +49,7 @@ services:
     networks:
       - app-network
   ##3
-  springboot-app2:
+  springboot-app9002:
     image: node-2
     build: .
     environment:
@@ -73,7 +73,7 @@ services:
     networks:
       - app-network
   ##4
-  springboot-app3:
+  springboot-app9003:
     image: node-3
     build: .
     environment:
@@ -97,7 +97,7 @@ services:
     networks:
       - app-network
   ##5
-  springboot-app4:
+  springboot-app9004:
     image: node-4
     build: .
     environment:
@@ -121,7 +121,7 @@ services:
     networks:
       - app-network
   ##6
-  springboot-app5:
+  springboot-app9005:
     image: node-5
     build: .
     environment:
@@ -145,7 +145,7 @@ services:
     networks:
       - app-network
   ##7
-  springboot-app6:
+  springboot-app9006:
     image: node-6
     build: .
     environment:
@@ -169,7 +169,7 @@ services:
     networks:
       - app-network
   ##8
-  springboot-app7:
+  springboot-app9007:
     image: node-7
     build: .
     environment:
@@ -193,7 +193,7 @@ services:
     networks:
       - app-network
   ##9
-  springboot-app8:
+  springboot-app9008:
     image: node-8
     build: .
     environment:
@@ -213,7 +213,7 @@ services:
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
-      POSTGRES_DB: node_9007
+      POSTGRES_DB: node_9008
     networks:
       - app-network
 ##network section

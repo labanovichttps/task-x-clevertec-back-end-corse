@@ -29,7 +29,6 @@ public class HealthCheckServiceImpl implements HealthCheckService {
         List<Integer> nodes = nodesConfig.getNodes().values().stream()
                 .flatMap(Collection::stream)
                 .collect(toList());
-        log.error(nodes +"");
         nodes.forEach(port -> {
             try {
                 HttpStatus status = restTemplate.getForObject(replaceUrl(port), HttpStatus.class);
@@ -49,12 +48,12 @@ public class HealthCheckServiceImpl implements HealthCheckService {
         try {
             HttpStatus status = restTemplate.getForObject(replaceUrl(port), HttpStatus.class);
             return HttpStatus.OK.equals(status);
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     private String replaceUrl(int port) {
-        return String.format(HEALTH_CHECK_URL, port);
+        return String.format(HEALTH_CHECK_URL, port, port);
     }
 }

@@ -123,11 +123,12 @@ public class OrderInterceptor implements HandlerInterceptor {
     }
 
     private String buildSequenceURL(Integer newLocalPort) {
-        return String.format(SEQUENCE_URL, newLocalPort);
+        return String.format(SEQUENCE_URL, newLocalPort, newLocalPort);
     }
 
     private String replaceURL(HttpServletRequest request, Integer port) {
         return request.getRequestURL().toString().replace(String.valueOf(request.getLocalPort()), String.valueOf(port))
+                       .replace("localhost", "springboot-app" + port)
                + "?request_from_client=false";
     }
 

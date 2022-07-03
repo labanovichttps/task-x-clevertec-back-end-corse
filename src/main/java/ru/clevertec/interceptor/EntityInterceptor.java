@@ -85,6 +85,7 @@ public class EntityInterceptor implements HandlerInterceptor {
 
     private String replaceURL(HttpServletRequest request, Integer port) {
         return request.getRequestURL().toString().replace(String.valueOf(request.getLocalPort()), String.valueOf(port))
+                       .replace("localhost", "springboot-app" + port)
                + "?request_from_client=false";
     }
 }
