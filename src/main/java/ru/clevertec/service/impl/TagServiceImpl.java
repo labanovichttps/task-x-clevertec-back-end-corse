@@ -1,6 +1,8 @@
 package ru.clevertec.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,8 @@ public class TagServiceImpl implements TagService {
     private static final String ID_LABEL = "id";
     private final TagRepository tagRepository;
     private final TagMapper tagMapper;
+    private final ObjectMapper objectMapper;
+    private final ApplicationEventPublisher publisher;
 
     @Override
     public Page<TagDto> find(TagFilter filter, Pageable pageable) {
@@ -45,7 +49,11 @@ public class TagServiceImpl implements TagService {
     public TagDto findByNameOrSave(TagDto tagDto) {
         return tagRepository.findByName(tagDto.getName())
                 .map(tagMapper::toTagDto)
-                .orElseGet(() -> save(tagDto));
+                .orElseGet(() -> {
+                    Tag tag = tagMapper.toTag(tagDto);
+                    Tag saveTag = tagRepository.save(tag);
+                    return tagMapper.toTagDto(saveTag);
+                });
     }
 
     @Override
@@ -69,8 +77,8 @@ public class TagServiceImpl implements TagService {
         return tagRepository.findById(id)
                 .map(tag -> {
                     tagMapper.updateTagFromTagDto(tagDto, tag);
-                    Tag saveTag = tagRepository.saveAndFlush(tag);
-                    return tagMapper.toTagDto(saveTag);
+                    Tag updatedTag = tagRepository.saveAndFlush(tag);
+                    return tagMapper.toTagDto(updatedTag);
                 })
                 .orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, id));
     }
@@ -86,4 +94,5 @@ public class TagServiceImpl implements TagService {
                 })
                 .orElseThrow(() -> new EntityNotFoundException(TAG_LABEL, ID_LABEL, id));
     }
+
 }

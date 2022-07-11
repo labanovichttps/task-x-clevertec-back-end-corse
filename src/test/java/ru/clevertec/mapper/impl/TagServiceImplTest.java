@@ -1,4 +1,4 @@
-package ru.clevertec.service.impl;
+package ru.clevertec.mapper.impl;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +11,7 @@ import ru.clevertec.entity.Tag;
 import ru.clevertec.exception.EntityNotFoundException;
 import ru.clevertec.mapper.TagMapper;
 import ru.clevertec.repository.TagRepository;
+import ru.clevertec.service.impl.TagServiceImpl;
 
 import java.util.Optional;
 

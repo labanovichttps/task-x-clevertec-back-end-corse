@@ -1,4 +1,4 @@
-package ru.clevertec.service.impl;
+package ru.clevertec.mapper.impl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +10,7 @@ import ru.clevertec.entity.User;
 import ru.clevertec.exception.EntityNotFoundException;
 import ru.clevertec.mapper.UserMapper;
 import ru.clevertec.repository.UserRepository;
+import ru.clevertec.service.impl.UserServiceImpl;
 
 import java.util.Optional;
 

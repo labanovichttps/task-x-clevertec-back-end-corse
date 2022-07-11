@@ -1,4 +1,4 @@
-package ru.clevertec.service.impl;
+package ru.clevertec.mapper.impl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +12,7 @@ import ru.clevertec.entity.Certificate;
 import ru.clevertec.exception.EntityNotFoundException;
 import ru.clevertec.mapper.CertificateMapper;
 import ru.clevertec.repository.CertificateRepository;
+import ru.clevertec.service.impl.CertificateServiceImpl;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

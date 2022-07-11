@@ -3,7 +3,6 @@ package ru.clevertec.handler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -23,82 +22,83 @@ public class ApplicationExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException exc) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ErrorDto.builder()
-                        .message(exc.getMessage())
-                        .errorCode(exc.getErrorCode())
-                        .build());
+    public ErrorDto handleEntityNotFoundException(EntityNotFoundException exc) {
+        return ErrorDto.builder()
+                .message(exc.getMessage())
+                .errorCode(exc.getErrorCode())
+                .build();
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(ErrorDto.builder()
-                        .message(e.getMessage())
-                        .errorCode(1337)
-                        .build());
+    public ErrorDto handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        return ErrorDto.builder()
+                .message(e.getMessage())
+                .errorCode(1337)
+                .build();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ErrorDto.builder()
-                        .message(e.getMessage())
-                        .errorCode(69)
-                        .build());
+    public ErrorDto handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        return ErrorDto.builder()
+                .message(e.getMessage())
+                .errorCode(69)
+                .build();
     }
 
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<?> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
-                .body(ErrorDto.builder()
-                        .message(e.getMessage())
-                        .errorCode(420)
-                        .build());
+    public ErrorDto handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        return ErrorDto.builder()
+                .message(e.getMessage())
+                .errorCode(420)
+                .build();
     }
 
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     @ExceptionHandler(HttpClientErrorException.UnsupportedMediaType.class)
-    public ResponseEntity<?> handleUnsupportedMediaType(HttpClientErrorException.UnsupportedMediaType e) {
-        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-                .body(ErrorDto.builder()
-                        .message(e.getMessage())
-                        .errorCode(420)
-                        .build());
+    public ErrorDto handleUnsupportedMediaType(HttpClientErrorException.UnsupportedMediaType e) {
+        return ErrorDto.builder()
+                .message(e.getMessage())
+                .errorCode(22833)
+                .build();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<?> handleBindException(BindException e){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ErrorDto.builder()
-                        .message(e.getAllErrors().toString())
-                        .errorCode(40404)
-                        .build());
+    public ErrorDto handleBindException(BindException e) {
+        return ErrorDto.builder()
+                .message(e.getAllErrors().toString())
+                .errorCode(40404)
+                .build();
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException e){
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ErrorDto.builder()
-                        .message(e.getMessage())
-                        .errorCode(42233)
-                        .build());
+    public ErrorDto handleConstraintViolationException(ConstraintViolationException e) {
+        return ErrorDto.builder()
+                .message(e.getMessage())
+                .errorCode(42233)
+                .build();
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<?> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e){
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ErrorDto.builder()
-                        .message(e.getMessage())
-                        .errorCode(900999)
-                        .build());
+    public ErrorDto handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        return ErrorDto.builder()
+                .message(e.getMessage())
+                .errorCode(900999)
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(HttpClientErrorException.class)
+    public ErrorDto handleHttpClientErrorException(HttpClientErrorException e) {
+        return ErrorDto.builder()
+                .message(e.getMessage())
+                .errorCode(3333)
+                .build();
     }
 
 }

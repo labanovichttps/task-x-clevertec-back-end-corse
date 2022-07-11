@@ -1,8 +1,6 @@
 package ru.clevertec.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.dto.CertificateDto;
@@ -38,18 +36,11 @@ public class OrderServiceImpl implements OrderService {
     private static final String ID_LABEL = "id";
 
     @Override
-    public Page<ReadOrderDto> find(Long userId, Pageable pageable) {
-        return orderRepository.findAllByUserId(userId, pageable)
-                .map(orderMapper::toReadOrderDto);
-    }
-
-    @Override
     public ReadOrderDto findById(Long id) {
         return orderRepository.findById(id)
                 .map(orderMapper::toReadOrderDto)
                 .orElseThrow(() -> new EntityNotFoundException(ORDER_LABEL, ID_LABEL, id));
     }
-
 
     @Override
     @Transactional
